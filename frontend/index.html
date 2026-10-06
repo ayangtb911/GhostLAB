@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GHOSTLAB</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+    <div class="logo">
+        <div class="logo-icon">👻</div>
+
+        <div>
+            <h2>GHOSTLAB</h2>
+            <span>Virtual Testing Lab</span>
+        </div>
+    </div>
+
+    <nav class="navigation">
+
+        <button class="nav-item active" data-page="dashboard">
+            <span>⌂</span>
+            <span>Dashboard</span>
+        </button>
+
+        <button class="nav-item" data-page="nodes">
+            <span>◈</span>
+            <span>Nodes</span>
+        </button>
+
+        <button class="nav-item" data-page="testing">
+            <span>✓</span>
+            <span>Testing</span>
+        </button>
+
+        <button class="nav-item" data-page="failures">
+            <span>⚠</span>
+            <span>Failure Injection</span>
+        </button>
+
+        <button class="nav-item" data-page="logs">
+            <span>☷</span>
+            <span>Logs</span>
+        </button>
+
+        <button class="nav-item" data-page="history">
+            <span>◷</span>
+            <span>History</span>
+        </button>
+
+        <button class="nav-item" data-page="settings">
+            <span>⚙</span>
+            <span>Settings</span>
+        </button>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+        <div class="user-card">
+
+            <div class="avatar">T</div>
+
+            <div>
+                <strong>Operator</strong>
+                <small>GHOSTLAB USER</small>
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<main class="main">
+
+<header class="topbar">
+
+    <div>
+
+        <span class="system-status">
+            <span class="status-dot"></span>
+            SYSTEM ONLINE
+        </span>
+
+    </div>
+
+    <div class="top-actions">
+
+        <div class="search-box">
+
+            <span>⌕</span>
+
+            <input
+                id="global-search"
+                type="text"
+                placeholder="Search nodes, tests, logs..."
+            >
+
+        </div>
+
+        <button
+            class="icon-button"
+            id="refresh-button"
+            title="Refresh"
+        >
+            ↻
+        </button>
+
+        <button class="profile-button">
+            T
+        </button>
+
+    </div>
+
+</header>
+
+
+<div class="content">
+
+
+<!-- =========================================================
+     DASHBOARD
+========================================================= -->
+
+<section
+    class="page active-page"
+    id="dashboard-page"
+>
+
+    <div class="page-heading">
+
+        <div>
+
+            <span class="eyebrow">
+                VIRTUAL SYSTEM TESTING & FAILURE ANALYSIS
+            </span>
+
+            <h1>Dashboard</h1>
+
+            <p>
+                Test. Break. Analyze. Learn.
+            </p>
+
+        </div>
+
+        <button
+            class="primary-button"
+            id="dashboard-run-tests"
+        >
+            ▶ Run Test Suite →
+        </button>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <span>VIRTUAL NODES</span>
+            <strong id="node-count">0</strong>
+        </div>
+
+        <div class="stat-card">
+            <span>TEST RESULTS</span>
+            <strong id="test-count">0</strong>
+        </div>
+
+        <div class="stat-card">
+            <span>ACTIVE FAILURES</span>
+            <strong id="failure-count">0</strong>
+        </div>
+
+        <div class="stat-card">
+            <span>SYSTEM HEALTH</span>
+            <strong id="health-value">0%</strong>
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-grid">
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <h2>Node Overview</h2>
+
+                    <p>
+                        Active components in the selected environment.
+                    </p>
+                </div>
+
+            </div>
+
+            <div
+                id="dashboard-nodes"
+                class="node-overview"
+            ></div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <h2>Recent Activity</h2>
+
+                    <p>
+                        Latest system events.
+                    </p>
+                </div>
+
+            </div>
+
+            <div
+                id="recent-activity"
+                class="activity-list"
+            ></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     NODES
+========================================================= -->
+
+<section
+    class="page"
+    id="nodes-page"
+>
+
+    <div class="page-heading">
+
+        <div>
+
+            <span class="eyebrow">
+                SYSTEM COMPONENTS
+            </span>
+
+            <h1>Virtual Nodes</h1>
+
+            <p>
+                Manage and configure your virtual system components.
+            </p>
+
+        </div>
+
+
+        <div class="node-page-actions">
+
+            <button
+                class="secondary-button"
+                id="power-all-on-button"
+            >
+                ⚡ POWER ALL ON
+            </button>
+
+            <button
+                class="danger-button"
+                id="power-all-off-button"
+            >
+                ⏻ POWER ALL OFF
+            </button>
+
+            <button
+                class="primary-button"
+                id="add-node-button"
+            >
+                ＋ Add Node
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="nodes-grid"
+        class="nodes-grid"
+    ></div>
+
+</section>
+
+
+<!-- =========================================================
+     TESTING
+========================================================= -->
+
+<section
+    class="page"
+    id="testing-page"
+>
+
+    <div class="page-heading">
+
+        <div>
+
+            <span class="eyebrow">
+                AUTOMATED VALIDATION
+            </span>
+
+            <h1>Run Tests</h1>
+
+            <p>
+                Validate the selected virtual environment.
+            </p>
+
+        </div>
+
+
+        <button
+            class="primary-button"
+            id="run-tests-button"
+        >
+            ▶ Run Tests
+        </button>
+
+    </div>
+
+
+    <div
+        id="tests-grid"
+        class="tests-grid"
+    ></div>
+
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <div>
+
+                <h2>Test Execution</h2>
+
+                <p>
+                    Current campaign status.
+                </p>
+
+            </div>
+
+            <span class="badge neutral">
+                READY
+            </span>
+
+        </div>
+
+
+        <div class="progress-container">
+
+            <div class="progress-info">
+
+                <span>
+                    Waiting for tests
+                </span>
+
+                <span>
+                    100%
+                </span>
+
+            </div>
+
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    id="test-progress"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <div>
+                <h2>Test Results</h2>
+            </div>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Test</th>
+                        <th>Status</th>
+                        <th>Message</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="results-table"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FAILURE INJECTION
+========================================================= -->
+
+<section
+    class="page"
+    id="failures-page"
+>
+
+    <div class="page-heading">
+
+        <div>
+
+            <span class="eyebrow">
+                CHAOS SIMULATION
+            </span>
+
+            <h1>Failure Injection</h1>
+
+            <p>
+                Simulate real-world failures and observe system behaviour.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="failure-layout">
+
+
+        <div class="panel">
+
+            <h2>Select Node</h2>
+
+            <select
+                id="failure-node"
+                class="select-input"
+            >
+
+                <option value="">
+                    Select a node
+                </option>
+
+            </select>
+
+
+            <h3>
+                Failure Type
+            </h3>
+
+
+            <div class="failure-options"></div>
+
+        </div>
+
+
+        <div class="failure-preview">
+
+            <div class="danger-icon">
+                ⚠
+            </div>
+
+            <span>
+                SIMULATION READY
+            </span>
+
+            <h2>
+                Inject Failure
+            </h2>
+
+            <p>
+                Select a node and failure type to simulate abnormal behaviour.
+            </p>
+
+            <button
+                class="danger-button"
+                id="inject-failure-button"
+            >
+                ⚡ Inject Failure
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <div>
+                <h2>Failure History</h2>
+            </div>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Node</th>
+                        <th>Failure</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="failures-table"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     LOGS
+========================================================= -->
+
+<section
+    class="page"
+    id="logs-page"
+>
+
+    <div class="page-heading">
+
+        <div>
+
+            <span class="eyebrow">
+                SYSTEM ACTIVITY
+            </span>
+
+            <h1>System Logs</h1>
+
+            <p>
+                Monitor events generated by GHOSTLAB.
+            </p>
+
+        </div>
+
+
+        <button
+            class="secondary-button"
+            id="clear-logs-button"
+        >
+            🗑 Clear Logs
+        </button>
+
+    </div>
+
+
+    <div class="log-filters">
+
+        <button
+            class="filter active"
+            data-filter="all"
+        >
+            All
+        </button>
+
+        <button
+            class="filter"
+            data-filter="info"
+        >
+            Info
+        </button>
+
+        <button
+            class="filter"
+            data-filter="test"
+        >
+            Test
+        </button>
+
+        <button
+            class="filter"
+            data-filter="warning"
+        >
+            Warning
+        </button>
+
+        <button
+            class="filter"
+            data-filter="error"
+        >
+            Error
+        </button>
+
+        <button
+            class="filter"
+            data-filter="failure"
+        >
+            Chaos
+        </button>
+
+    </div>
+
+
+    <div class="panel log-panel">
+
+        <div
+            id="logs-container"
+            class="logs-container"
+        ></div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     HISTORY
+========================================================= -->
+
+<section
+    class="page"
+    id="history-page"
+>
+
+    <div class="page-heading">
+
+        <div>
+
+            <span class="eyebrow">
+                HISTORICAL DATA
+            </span>
+
+            <h1>History</h1>
+
+            <p>
+                Review previous test campaigns.
+            </p>
+
+        </div>
+
+
+        <button
+            class="secondary-button"
+            id="clear-history-button"
+        >
+            🗑 Clear History
+        </button>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div
+            id="history-container"
+            class="activity-list"
+        ></div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     SETTINGS
+========================================================= -->
+
+<section
+    class="page"
+    id="settings-page"
+>
+
+    <div class="page-heading">
+
+        <div>
+
+            <span class="eyebrow">
+                CONFIGURATION
+            </span>
+
+            <h1>Settings</h1>
+
+            <p>
+                Configure your GHOSTLAB interface.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="settings-layout">
+
+
+        <div class="panel settings-panel">
+
+            <h2>General</h2>
+
+
+            <div class="setting-row">
+
+                <div>
+
+                    <strong>
+                        Animation Effects
+                    </strong>
+
+                    <p>
+                        Enable smooth interface animations.
+                    </p>
+
+                </div>
+
+
+                <label class="switch">
+
+                    <input
+                        id="animation-toggle"
+                        type="checkbox"
+                        checked
+                    >
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div>
+
+                    <strong>
+                        Dark Interface
+                    </strong>
+
+                    <p>
+                        Use the GHOSTLAB dark theme.
+                    </p>
+
+                </div>
+
+
+                <label class="switch">
+
+                    <input
+                        id="dark-toggle"
+                        type="checkbox"
+                        checked
+                    >
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel settings-panel">
+
+            <h2>Simulation</h2>
+
+
+            <div class="setting-row">
+
+                <div>
+
+                    <strong>
+                        Default Environment
+                    </strong>
+
+                    <p>
+                        Choose the environment used by the selector.
+                    </p>
+
+                </div>
+
+
+                <select
+                    id="default-environment"
+                    class="setting-select"
+                >
+
+                    <option>AUTOMOTIVE</option>
+                    <option>PC</option>
+                    <option>AIRCRAFT</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div>
+
+                    <strong>
+                        Test Timeout
+                    </strong>
+
+                    <p>
+                        Maximum simulated test execution time.
+                    </p>
+
+                </div>
+
+
+                <select class="setting-select">
+
+                    <option>30 seconds</option>
+                    <option>60 seconds</option>
+                    <option>120 seconds</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</div>
+
+</main>
+
+</div>
+
+
+<!-- =========================================================
+     ADD NODE MODAL
+========================================================= -->
+
+<div
+    class="modal"
+    id="node-modal"
+>
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="eyebrow">
+                    VIRTUAL NODE
+                </span>
+
+                <h2>
+                    Add New Node
+                </h2>
+
+                <p>
+                    Create a node for the selected environment.
+                </p>
+
+            </div>
+
+
+            <button
+                class="modal-close"
+                id="close-node-modal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <label for="new-node-id">
+            Node ID
+        </label>
+
+        <input
+            id="new-node-id"
+            class="text-input"
+            type="text"
+            placeholder="Example: CPU-01"
+            autocomplete="off"
+        >
+
+
+        <label for="new-node-type">
+            Node Type
+        </label>
+
+        <select
+            id="new-node-type"
+            class="select-input"
+        ></select>
+
+
+        <div class="modal-actions">
+
+            <button
+                class="secondary-button"
+                id="close-node-modal-bottom"
+            >
+                Cancel
+            </button>
+
+            <button
+                class="primary-button"
+                id="create-node-button"
+            >
+                ＋ Create Node
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="toast-container"></div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
